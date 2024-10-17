@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plot Example</title>
-</head>
-<body>
+{% extends '_base.html' %}
+{% block content %}
     <h1>Matplotlib Plot in Django</h1>
-    <img src="data:image/png;base64,{{ plot_uri }}" alt="Plot">
-</body>
-</html>
+    <img src="data:image/png;base64,{{ plot_uri }}" alt="Plot"><br>
+    <a href="{% url 'home-view' %}">Go back</a>
+{% endblock %}
