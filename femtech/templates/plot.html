@@ -1,9 +1,9 @@
 {% extends '_base.html' %}
 {% block content %}
-<div class="container mt-3" style="width: 600px;">
-    <h1>Matplotlib Plot in Django</h1>
+<div class="container mt-3" style="width: 800px;">
+    <center><h1 class="mb-5">Plot af registreringer</h1></center>
     <img src="data:image/png;base64,{{ plot_uri }}" alt="Plot"><br>
     <hr class="mt-5">
-    <a href="{% url 'home-view' %}" class="btn btn-secondary">Go back</a>
+    <a href="{% url 'home-view' %}" class="btn btn-secondary">Til forsiden</a>
 </div>
 {% endblock %}

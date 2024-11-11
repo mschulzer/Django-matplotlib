@@ -4,8 +4,8 @@
 <div class="container mt-3" style="width: 600px;">
     <form action="{% url "upload-data-view" %}" method="POST" enctype="multipart/form-data" id="csvSubmitForm"> 
         {% csrf_token %}
+        <h2 class="mt-5 mb-5">Upload CSV-fil</h2>
         <div class="form-group">
-            <label for="name" class="mb-3">Choose file: </label>
             <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
         </div>
         <!--
@@ -14,33 +14,65 @@
         </div>
         -->
     </form>
-
-    <table class="mt-5">
+    <hr class="mt-5">
+    <a href="{% url 'home-view' %}" onClick="javascript:location.reload();" id="btnReset" class="btn btn-secondary isDisabled" disabled>Nulstil</a>
+    {% if uploaded %}<a href="{% url 'plot-view' %}" id="btnPlot" class="btn btn-primary">Plot registrering</a>{% endif %}
+    <table class="mt-5 mb-5">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Start</th>
-                <th>End</th>
+                <th># ID</th>
+                <th>Værdi</th>
+                <th>Farve</th>
+                <th>Dato/Tid</th>
+                <th>Øjenfarve</th>
             </tr>
         </thead>
         <tbody>
         {% for line in data_dict %}
             <tr>
                 {% for key,value in line.items %}
-                    <td>{{ value }}</td>
+                    {% if key == "color" %}
+                        <td style="background-color: {{value}}; color: rgba(0, 0, 0, 0.25); font-size: 10px;">{{ value }}</td>
+                    {% else %}
+                        <td>{{ value }}</td>
+                    {% endif %}
                 {% endfor %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <hr class="mt-5">
-    <a href="{% url 'home-view' %}" class="btn btn-secondary">Go back</a>
 </div>
 
+<!--
 <script>
 document.querySelector("#csv_file").addEventListener("change", () => {
     document.querySelector("#csvSubmitForm").submit();
+    document.querySelector("#btnReset").classList.remove("isDisabled");
 });
 </script>
+-->
+<script>
+    // Check local storage on page load and remove "isDisabled" class if the form was submitted
+    window.addEventListener("load", () => {
+        if (localStorage.getItem("formSubmitted") === "true") {
+            document.querySelector("#btnReset").classList.remove("isDisabled");
+        }
+    });
+    
+    // Set up event listener for file input change
+    document.querySelector("#csv_file").addEventListener("change", () => {
+        document.querySelector("#csvSubmitForm").submit();
+        document.querySelector("#btnReset").classList.remove("isDisabled");
+        
+        // Set the form submission state in local storage
+        localStorage.setItem("formSubmitted", "true");
+    });
+    
+    // Optional: clear local storage when resetting the form
+    document.querySelector("#btnReset").addEventListener("click", () => {
+        localStorage.removeItem("formSubmitted");
+    });
+    </script>
+
 
 {% endblock %}
